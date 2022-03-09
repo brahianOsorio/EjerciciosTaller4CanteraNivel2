@@ -95,47 +95,62 @@ public class PlanetarySistem {
 	 *                             atraccion planetaria deseada
 	 * @return retorna la fuerza de atraccion entre los dos objetos involucrados en
 	 *         el sistema
-	 *         
+	 * 
 	 * @author Brahian Stiven Osorio Velasquez brahianstiven.osorio@gmail.com
 	 * 
-	 * @since 1.00.000 2022-03-04 
+	 * @since 1.00.000 2022-03-04
+	 * 
 	 */
-	public double planetaryAttraction(String nameOfOneElement, String nameOfTwoElement) {
+	public double planetaryAttraction(String nameOfOneElement, String nameOfTwoElement,
+			double distanceBetweenTheOjebcts) {
 		/**
-		 * 
+		 * esta variable va a contener la masa del primer objeto que se encontro con el
+		 * primer nombre nameOfOneElement
 		 */
 		double massOfFistObject = loadMassOfAName(nameOfOneElement);
 		/**
-		 * 
+		 * esta variable va a contener la masa del segunndo objeto que se encontro con
+		 * el segundo nombre nameOfTwoElement
 		 */
-		double massOfSecondObject = loadDistanceOfAName(nameOfTwoElement);
-		/**
-		 * 
-		 */
-		double distanceOfFistObject = loadDistanceOfAName(nameOfOneElement);
-		/**
-		 * 
-		 */
-		double distanceOfSecondObject = loadDistanceOfAName(nameOfTwoElement);
+		double massOfSecondObject = loadMassOfAName(nameOfTwoElement);
 
-		
 		/**
-		 * aqui validamos que los datos que se cargaron sean correctos y no tengan errores
-		 * si alguna variable es igual a cero entonces significa que hubo un error   
+		 * aqui validamos que los datos que se cargaron sean correctos y no tengan
+		 * errores si alguna variable es igual a cero entonces significa que hubo un
+		 * error
 		 */
-		if (massOfFistObject == 0 | massOfSecondObject == 0 | distanceOfFistObject == 0 | distanceOfSecondObject == 0) {
+		if (massOfFistObject == 0 | massOfSecondObject == 0) {
 			throw new Error("Ops Ocurrio Un Error ");
 		} else {
-			double divisor = 6.67E-11 * massOfFistObject * massOfSecondObject;
-			double dividendo = Math.pow(distanceOfFistObject, 2) + Math.pow(distanceOfSecondObject, 2);
-			return divisor / dividendo;
+			/**
+			 * se encuantra el dividendo de la formula que nos permite hallar la fuerza de
+			 * atraccion entre dos objetos multiplicando la costante 6.67E-11 con las masas
+			 * de los objetos involucrados
+			 */
+			double dividendo = 6.67E-11 * massOfFistObject * massOfSecondObject;
+			/**
+			 * se encuantra el divisor de la formula el cual es la distancia de los dos
+			 * objetos elevada al cuadrado *
+			 */
+			double divisor = Math.pow(distanceBetweenTheOjebcts, 2);
+			
+			
+			return dividendo / divisor;
 		}
 
 	}
+
 	/**
-	 *  
-	 * @param name
-	 * @return
+	 * este metodo permite encontrar un planeta por el nombre  
+	 * 
+	 * @param name es en nombre que tiene el planeta que se busca 
+	 * 
+	 * @return si se encuantra un planeta retorna el planeta si no lo encuentra retorna null
+	 * 
+	 * @author Brahian Stiven Osorio Velasquez brahianstiven.osorio@gmail.com
+	 * 
+	 * @since 1.00.000 2022-03-04
+	 * 
 	 */
 	private Planet findPlanetByName(String name) {
 		try {
@@ -149,7 +164,17 @@ public class PlanetarySistem {
 		}
 
 	}
-
+	/**
+	 * este metodo permite encontrar un cuerpo espacial por el nombre 
+	 * 
+	 * @param name es en nombre que tiene el cuerpo espacial que se busca
+	 * 
+	 * @return si se encuantra un cuerpo espacial retorna el cuerpo espacial si no lo encuentra retorna null
+	 * 
+	 * @author Brahian Stiven Osorio Velasquez brahianstiven.osorio@gmail.com
+	 * 
+	 * @since 1.00.000 2022-03-04
+	 */
 	private SpacialBody findBodyByName(String name) {
 		try {
 			return bodys.stream().filter(body -> body.getName().equals(name)).collect(Collectors.toList()).get(0);
@@ -161,19 +186,51 @@ public class PlanetarySistem {
 
 	}
 
+	/**
+	 * este metodo permite cargar la masa con el nombre de un objeto  
+	 * 
+	 * @param name es en nombre que tiene el objeto 
+	 * 
+	 * @return int retorna la masa del objeto con el nombre name, siempre y cuando exista 
+	 * 
+	 * @author Brahian Stiven Osorio Velasquez brahianstiven.osorio@gmail.com
+	 * 
+	 * @since 1.00.000 2022-03-04
+	 */
 	private double loadMassOfAName(String name) {
+		/**
+		 * esta variable se usa para retornar la masa del objeto si existe en el sistema planetario
+		 */
 		double answer = 0;
 		try {
+			/**
+			 * buscamos si existe un planeta de nombre name
+			 */
 			Planet planet;
 			planet = findPlanetByName(name);
+			/**
+			 * buscamos si existe un cuerpo espacial de nombre name
+			 */
 			SpacialBody body;
 			body = findBodyByName(name);
-
+			
+			/**
+			 * validamos las posibles soluciones 
+			 */
 			if (!planet.equals(null) && body == null) {
+				/**
+				 * en caso de que el objeto sea un planeta 
+				 */
 				answer = planet.getMass();
 			} else if (!body.equals(null) && planet == null) {
+				/**
+				 * en caso de que el objeto sea un cuerpo espacial 
+				 */
 				answer = body.getMass();
 			} else if (planet == null && body == null) {
+				/**
+				 * el caso que no sea ninguno 
+				 */
 				throw new Error("No Existe Un Objeto Con Nombre: " + name);
 			}
 
@@ -184,26 +241,4 @@ public class PlanetarySistem {
 		return answer;
 	}
 
-	private double loadDistanceOfAName(String name) {
-		double answer = 0;
-		try {
-			Planet planet;
-			planet = findPlanetByName(name);
-			SpacialBody body;
-			body = findBodyByName(name);
-
-			if (!planet.equals(null) && body == null) {
-				answer = planet.getDistanceSun();
-			} else if (!body.equals(null) && planet == null) {
-				answer = body.getDistanceSun();
-			} else if (planet == null && body == null) {
-				throw new Error("Ops Ocurrio Un Error ");
-			}
-
-		} catch (Exception mistake) {
-			System.out.println(mistake.getMessage());
-			throw new Error("Ops Ocurrio Un Error ");
-		}
-		return answer;
-	}
 }
