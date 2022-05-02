@@ -1,12 +1,12 @@
 package com.softka.canteraNivel2.taller4Ejercicio4.App;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.softka.canteraNivel2.taller4Ejercicio4.domain.ObjectVehicle;
 import com.softka.canteraNivel2.taller4Ejercicio4.domain.Vehicle;
+import com.softka.canteraNivel2.taller4Ejercicios.Util.ValidatorMenu;
 
 /**
  * Esta clse es la que nos va a permitir mostrar el menu necesario para crear un
@@ -15,7 +15,7 @@ import com.softka.canteraNivel2.taller4Ejercicio4.domain.Vehicle;
  * MenuCreateVehicle newMenuVehicle = new MenuCreateVehicle();
  * newMenuVehicle.start(); Vehicle newVehicle = newMenuVehicle.createVehicle();
  * 
- * @version 1.00.000 2022-03-08
+ * @version 1.00.001 2022-04-28
  * 
  * @author Brahian Stiven Osorio Velasquez brahainstiven.osorio@gmail.com
  *
@@ -23,10 +23,6 @@ import com.softka.canteraNivel2.taller4Ejercicio4.domain.Vehicle;
  *
  */
 public class MenuCreateVehicle {
-	/**
-	 * Esta variable va a leer los datos suministrados por el usuario en la consola
-	 */
-	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	/**
 	 * Esta variable almacena al tipo de vehiculo
 	 */
@@ -79,21 +75,19 @@ public class MenuCreateVehicle {
 		try {
 
 			System.out.println(" Bienvenido ");
-			System.out.print("Ingrese el tipo de Vehiculo: ");
-			typeOfVehicle = reader.readLine();
-			System.out.print("Ingrese el numero de pasajeros del Vehiculo: ");
-			numberOfPassengers = Integer.parseInt(reader.readLine());
+			typeOfVehicle = ValidatorMenu.getText("Ingrese el tipo de Vehiculo: ");
+			numberOfPassengers =(int)ValidatorMenu.getNumber("Ingrese el numero de pasajeros del Vehiculo: ");
 			boolean exit = false;
 			while (!exit) {
-				System.out.println("1-> Hay pasageros en el vehiculo ");
-				System.out.println("2-> No hay pasajeros en el vehiculo ");
-				String option = reader.readLine();
+				System.out.println("");
+				System.out.println("");
+				int option = ValidatorMenu.getNumberToTwoOptions("1-> Hay pasageros en el vehiculo \n2-> No hay pasajeros en el vehiculo ");
 				switch (option) {
-				case "1":
+				case 1:
 					thereArePassagers = true;
 					exit = true;
 					break;
-				case "2":
+				case 2:
 					thereArePassagers = false;
 					exit = true;
 					break;
@@ -103,22 +97,17 @@ public class MenuCreateVehicle {
 					break;
 				}
 			}
-			System.out.print("Ingrese el numero de ruedas del Vehiculo: ");
-			numberOfWheels = Integer.parseInt(reader.readLine());
+			numberOfWheels = (int)ValidatorMenu.getNumber("Ingrese el numero de ruedas del Vehiculo: ");
 
-			System.out.print("Ingrese el año de la fecha de la Matricula del Vehiculo: ");
-			year = Integer.parseInt(reader.readLine());
-			System.out.print("Ingrese el mes de la fecha de la Matricula del Vehiculo: ");
-			month = Integer.parseInt(reader.readLine());
-			System.out.print("Ingrese el dia de la fecha de la Matricula del Vehiculo: ");
-			day = Integer.parseInt(reader.readLine());
+			year = ValidatorMenu.getNumberToYear("Ingrese el año de la fecha de la Matricula del Vehiculo: ");			
+			month = ValidatorMenu.getNumberToMonth("Ingrese el mes de la fecha de la Matricula del Vehiculo: ");		
+			day = ValidatorMenu.getNumberToDay("Ingrese el dia de la fecha de la Matricula del Vehiculo: ");
+			
 			dateOfRegistraton = new GregorianCalendar(year, month, day);
 
-			System.out.print("Ingrese el tipo de via en la que se desplaza el Vehiculo: ");
-			typeOfRoad = reader.readLine();
+			typeOfRoad = ValidatorMenu.getText("Ingrese el tipo de via en la que se desplaza el Vehiculo: ");
 
-			System.out.print("Ingrese el color del Vehiculo: ");
-			color = reader.readLine();
+			color = ValidatorMenu.getText("Ingrese el color del Vehiculo: ");
 
 		} catch (Exception mistake) {
 			System.out.println(mistake.toString());
@@ -136,8 +125,8 @@ public class MenuCreateVehicle {
 	 * 
 	 * @since 1.00.000 2022-03-08
 	 */
-	public Vehicle createNewVehicle() {
-		return new Vehicle(typeOfVehicle, numberOfPassengers, thereArePassagers, numberOfWheels, dateOfRegistraton,
+	public ObjectVehicle createNewVehicle() {
+		return new ObjectVehicle(typeOfVehicle, numberOfPassengers, thereArePassagers, numberOfWheels, dateOfRegistraton,
 				typeOfRoad, color);
 	}
 
@@ -163,7 +152,7 @@ public class MenuCreateVehicle {
 	/**
 	 * Este Metodo Es para poder imprimir los vehiculos de una lista por consola 
 	 * 
-	 * @param vehicles List<Vehicle> es la lista de vehiculos a imprimir por consola 
+	 * @param vehicles List<ObjectVehicle> es la lista de vehiculos a imprimir por consola 
 	 * 
 	 * @author Brahian Stiven Osorio Velasquez brahianstiven.osorio@gmail.com
 	 * 
